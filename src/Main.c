@@ -6,7 +6,7 @@ NES_Bus nes;
 void Setup(AlxWindow* w){
 	// "/home/codeleaded/Data/NES/SuperMarioBros.nes"
 	// "/home/codeleaded/Data/NES/DonkeyKong.nes"
-	NES_Bus_Init(&nes,"/home/codeleaded/Data/NES/SuperMarioBros.nes");
+	NES_Bus_Init(&nes,"/home/codeleaded/Data/NES/DonkeyKong.nes");
 	C6502_reset(&nes.cpu);
 }
 void Update(AlxWindow* w){
@@ -82,7 +82,7 @@ void Delete(AlxWindow* w){
 }
 
 int main(){
-    if(Create("NES_Bus - Emulator",680,480,2,2,Setup,Update,Delete))
+    if(Create("NES_Bus - Emulator",256,240,4,4,Setup,Update,Delete))
         Start();
     return 0;
 }

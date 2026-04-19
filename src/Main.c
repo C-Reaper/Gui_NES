@@ -7,7 +7,7 @@ void Setup(AlxWindow* w){
 	// "/home/codeleaded/Data/NES/SuperMarioBros.nes"
 	// "/home/codeleaded/Data/NES/DonkeyKong.nes"
 	NES_Bus_Init(&nes,"/home/codeleaded/Data/NES/DonkeyKong.nes");
-	C6502_reset(&nes.cpu);
+	NES_Bus_reset(&nes);
 }
 void Update(AlxWindow* w){
 	Clear(BLACK);

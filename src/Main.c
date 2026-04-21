@@ -12,7 +12,7 @@ double SoundOut(double t){
 void Setup(AlxWindow* w){
 	// "/home/codeleaded/Data/NES/SuperMarioBros.nes"
 	// "/home/codeleaded/Data/NES/DonkeyKong.nes"
-	NES_Bus_Init(&nes,"/home/codeleaded/Data/NES/DonkeyKong.nes");
+	NES_Bus_Init(&nes,"/home/codeleaded/Data/NES/SuperMarioBros.nes");
 	NES_Bus_reset(&nes);
 	NES_Bus_SetSampleFrequency(&nes,SOUNDPLAYER_SAMPLE_RATE);
 
@@ -101,7 +101,8 @@ void Delete(AlxWindow* w){
 }
 
 int main(){
-    if(Create("NES_Bus - Emulator",256,240,4,4,Setup,Update,Delete))
+	// 256,240,4,4 | 500,300,4,4
+    if(Create("NES_Bus - Emulator",256,240,5,5,Setup,Update,Delete))
         Start();
     return 0;
 }

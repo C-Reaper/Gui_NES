@@ -112,7 +112,7 @@ void Delete(AlxWindow* w){
 
 int main(){
 	// 256,240,4,4 | 500,300,4,4
-    if(Create("NES_Bus - Emulator",256,240,5,5,Setup,Update,Delete))
+    if(Create("NES_Bus - Emulator",256,240,4,4,Setup,Update,Delete))
         Start();
     return 0;
 }

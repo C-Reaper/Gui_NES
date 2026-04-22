@@ -1,8 +1,10 @@
 #include "/home/codeleaded/System/Static/Library/WindowEngine1.0.h"
+#include "/home/codeleaded/System/Static/Library/PS4_Controller.h"
 #include "/home/codeleaded/System/Static/Library/SoundPlayer.h"
 #include "/home/codeleaded/System/Static/Library/NES.h"
 
 NES_Bus nes;
+PS4_Controller ps4c;
 SoundPlayer sb;
 
 double SoundOut(double t){
@@ -16,6 +18,7 @@ void Setup(AlxWindow* w){
 	NES_Bus_reset(&nes);
 	NES_Bus_SetSampleFrequency(&nes,SOUNDPLAYER_SAMPLE_RATE);
 
+	ps4c = PS4_Controller_New("/dev/input/by-id/usb-Sony_Interactive_Entertainment_Wireless_Controller-if03-event-joystick");
 	sb = SoundPlayer_New(2,SOUNDPLAYER_BITS_PER_SAMPLE,SOUNDPLAYER_SAMPLE_RATE,SoundOut);
 	
 	short buffer[1024 * 2];
@@ -80,23 +83,30 @@ void Update_NoAudio(AlxWindow* w){
 void Update(AlxWindow* w){
 	Clear(BLACK);
 
+	PS4_Controller_Update(&ps4c);
+	const signed int absx = PS4_Controller_Abs(&ps4c,PS4_CONTROLLER_LX);
+	const signed int absy = PS4_Controller_Abs(&ps4c,PS4_CONTROLLER_LY);
+
 	nes.controller[0] = 0x00;
-	nes.controller[0] |= Stroke(ALX_KEY_X).DOWN ? 0x80 : 0x00;     // A Button
-	nes.controller[0] |= Stroke(ALX_KEY_Z).DOWN ? 0x40 : 0x00;     // B Button
-	nes.controller[0] |= Stroke(ALX_KEY_A).DOWN ? 0x20 : 0x00;     // Select
-	nes.controller[0] |= Stroke(ALX_KEY_S).DOWN ? 0x10 : 0x00;     // Start
-	nes.controller[0] |= Stroke(ALX_KEY_UP).DOWN ? 0x08 : 0x00;
-	nes.controller[0] |= Stroke(ALX_KEY_DOWN).DOWN ? 0x04 : 0x00;
-	nes.controller[0] |= Stroke(ALX_KEY_LEFT).DOWN ? 0x02 : 0x00;
-	nes.controller[0] |= Stroke(ALX_KEY_RIGHT).DOWN ? 0x01 : 0x00;
+	nes.controller[0] |= Stroke(ALX_KEY_X).DOWN || PS4_Controller_Key(&ps4c,PS4_CONTROLLER_X).DOWN ? 0x80 : 0x00;     // A Button
+	nes.controller[0] |= Stroke(ALX_KEY_Z).DOWN || PS4_Controller_Key(&ps4c,PS4_CONTROLLER_O).DOWN ? 0x40 : 0x00;     // B Button
+	nes.controller[0] |= Stroke(ALX_KEY_A).DOWN || PS4_Controller_Key(&ps4c,PS4_CONTROLLER_SELECT).DOWN ? 0x20 : 0x00;     // Select
+	nes.controller[0] |= Stroke(ALX_KEY_S).DOWN || PS4_Controller_Key(&ps4c,PS4_CONTROLLER_OPTIONS).DOWN ? 0x10 : 0x00;     // Start
+	
+	nes.controller[0] |= Stroke(ALX_KEY_UP).DOWN || (absy >= 0 && absy < 100) ? 0x08 : 0x00;
+	nes.controller[0] |= Stroke(ALX_KEY_DOWN).DOWN || (absy >= 156) ? 0x04 : 0x00;
+	nes.controller[0] |= Stroke(ALX_KEY_LEFT).DOWN || (absx >= 0 && absx < 100) ? 0x02 : 0x00;
+	nes.controller[0] |= Stroke(ALX_KEY_RIGHT).DOWN || (absx >= 156) ? 0x01 : 0x00;
 
 	// Update_NoAudio(w);
-	if (Stroke(ALX_KEY_R).PRESSED) 		NES_Bus_reset(&nes);
+	if (Stroke(ALX_KEY_R).PRESSED || PS4_Controller_Key(&ps4c,PS4_CONTROLLER_HOME).PRESSED)
+		NES_Bus_reset(&nes);
 
 	NES_Bus_Render(&nes,WINDOW_STD_ARGS);
 }
 void Delete(AlxWindow* w){
 	SoundPlayer_Free(&sb);
+	PS4_Controller_Free(&ps4c);
 	NES_Bus_Free(&nes);
 }
 

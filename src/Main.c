@@ -14,7 +14,7 @@ double SoundOut(double t){
 void Setup(AlxWindow* w){
 	// "/home/codeleaded/Data/NES/SuperMarioBros.nes"
 	// "/home/codeleaded/Data/NES/DonkeyKong.nes"
-	NES_Bus_Init(&nes,"/home/codeleaded/Data/NES/SuperMarioBros.nes");
+	NES_Bus_Init(&nes,"/home/codeleaded/Data/NES/DonkeyKong.nes");
 	NES_Bus_reset(&nes);
 	NES_Bus_SetSampleFrequency(&nes,SOUNDPLAYER_SAMPLE_RATE);
 
@@ -82,6 +82,8 @@ void Update_NoAudio(AlxWindow* w){
 }
 void Update(AlxWindow* w){
 	Clear(BLACK);
+
+	//Update_NoAudio(w);
 
 	PS4_Controller_Update(&ps4c);
 	const signed int absx = PS4_Controller_Abs(&ps4c,PS4_CONTROLLER_LX);

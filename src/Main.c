@@ -14,7 +14,7 @@ double SoundOut(double t){
 void Setup(AlxWindow* w){
 	// "/home/codeleaded/Data/NES/SuperMarioBros.nes"
 	// "/home/codeleaded/Data/NES/DonkeyKong.nes"
-	NES_Bus_Init(&nes,"/home/codeleaded/Data/NES/DonkeyKong.nes");
+	NES_Bus_Init(&nes,"/home/codeleaded/Data/NES/SuperMarioBros.nes");
 	NES_Bus_reset(&nes);
 	NES_Bus_SetSampleFrequency(&nes,SOUNDPLAYER_SAMPLE_RATE);
 
@@ -90,11 +90,10 @@ void Update(AlxWindow* w){
 	const signed int absy = PS4_Controller_Abs(&ps4c,PS4_CONTROLLER_LY);
 
 	nes.controller[0] = 0x00;
-	nes.controller[0] |= Stroke(ALX_KEY_X).DOWN || PS4_Controller_Key(&ps4c,PS4_CONTROLLER_X).DOWN ? 0x80 : 0x00;     // A Button
-	nes.controller[0] |= Stroke(ALX_KEY_Z).DOWN || PS4_Controller_Key(&ps4c,PS4_CONTROLLER_O).DOWN ? 0x40 : 0x00;     // B Button
-	nes.controller[0] |= Stroke(ALX_KEY_A).DOWN || PS4_Controller_Key(&ps4c,PS4_CONTROLLER_SELECT).DOWN ? 0x20 : 0x00;     // Select
-	nes.controller[0] |= Stroke(ALX_KEY_S).DOWN || PS4_Controller_Key(&ps4c,PS4_CONTROLLER_OPTIONS).DOWN ? 0x10 : 0x00;     // Start
-	
+	nes.controller[0] |= Stroke(ALX_KEY_W).DOWN || PS4_Controller_Key(&ps4c,PS4_CONTROLLER_X).DOWN ? 0x80 : 0x00;     	// A Button
+	nes.controller[0] |= Stroke(ALX_KEY_E).DOWN || PS4_Controller_Key(&ps4c,PS4_CONTROLLER_O).DOWN ? 0x40 : 0x00;     	// B Button
+	nes.controller[0] |= Stroke(ALX_KEY_A).DOWN || PS4_Controller_Key(&ps4c,PS4_CONTROLLER_SELECT).DOWN ? 0x20 : 0x00;  // Select
+	nes.controller[0] |= Stroke(ALX_KEY_S).DOWN || PS4_Controller_Key(&ps4c,PS4_CONTROLLER_OPTIONS).DOWN ? 0x10 : 0x00; // Start
 	nes.controller[0] |= Stroke(ALX_KEY_UP).DOWN || (absy >= 0 && absy < 100) ? 0x08 : 0x00;
 	nes.controller[0] |= Stroke(ALX_KEY_DOWN).DOWN || (absy >= 156) ? 0x04 : 0x00;
 	nes.controller[0] |= Stroke(ALX_KEY_LEFT).DOWN || (absx >= 0 && absx < 100) ? 0x02 : 0x00;
@@ -112,7 +111,7 @@ void Delete(AlxWindow* w){
 	NES_Bus_Free(&nes);
 }
 
-int main(){
+int main(int argc,char** argv){
 	// 256,240,4,4 | 500,300,4,4
     if(Create("NES_Bus - Emulator",256,240,4,4,Setup,Update,Delete))
         Start();

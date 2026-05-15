@@ -12,10 +12,10 @@ double SoundOut(double t){
 	return nes.dAudioSample;
 }
 void Setup(AlxWindow* w){
-	// "/home/codeleaded/Data/NES/SuperMarioBros.nes"
-	// "/home/codeleaded/Data/NES/DonkeyKong.nes"
+	// "/home/codeleaded/Data/NES/SMB.nes"
+	// "/home/codeleaded/Data/NES/DK.nes"
 	// "/home/codeleaded/Data/NES/Tetris.nes"
-	NES_Bus_Init(&nes,"/home/codeleaded/Data/NES/Tetris.nes");
+	NES_Bus_Init(&nes,"/home/codeleaded/Data/NES/DK.nes");
 	NES_Bus_reset(&nes);
 	NES_Bus_SetSampleFrequency(&nes,SOUNDPLAYER_SAMPLE_RATE);
 
